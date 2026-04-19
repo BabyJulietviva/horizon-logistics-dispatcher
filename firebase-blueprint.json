@@ -1,0 +1,98 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "System user with specific roles.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["Admin", "Dispatcher", "Driver"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A delivery order in the system.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerName": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "In Transit", "Delivered", "Cancelled"] },
+        "priority": { "type": "string", "enum": ["Low", "Medium", "High", "Urgent"] },
+        "driverId": { "type": "string" },
+        "routeId": { "type": "string" },
+        "origin": { "type": "object", "properties": { "lat": { "type": "number" }, "lng": { "type": "number" }, "address": { "type": "string" } } },
+        "destination": { "type": "object", "properties": { "lat": { "type": "number" }, "lng": { "type": "number" }, "address": { "type": "string" } } },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "customerName", "status", "origin", "destination"]
+    },
+    "Driver": {
+      "title": "Driver",
+      "description": "Driver status and current location.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "status": { "type": "string", "enum": ["Active", "Offline", "On Break"] },
+        "currentLocation": { "type": "object", "properties": { "lat": { "type": "number" }, "lng": { "type": "number" } } },
+        "activeOrderId": { "type": "string" },
+        "lastUpdate": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "status"]
+    },
+    "Vehicle": {
+      "title": "Vehicle",
+      "description": "Fleet vehicle information.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "plateNumber": { "type": "string" },
+        "status": { "type": "string", "enum": ["Available", "In Maintenance", "On Route"] },
+        "fuelLevel": { "type": "number" }
+      },
+      "required": ["id", "type", "plateNumber", "status"]
+    },
+    "Route": {
+      "title": "Route",
+      "description": "Optimized delivery route.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "driverId": { "type": "string" },
+        "stops": { "type": "array", "items": { "type": "string" } },
+        "totalDistance": { "type": "number" },
+        "estimatedTime": { "type": "number" },
+        "status": { "type": "string", "enum": ["Draft", "Published", "Completed"] }
+      },
+      "required": ["id", "driverId", "stops", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Collection of all delivery orders"
+    },
+    "/drivers/{driverId}": {
+      "schema": "Driver",
+      "description": "Real-time driver status and location"
+    },
+    "/vehicles/{vehicleId}": {
+      "schema": "Vehicle",
+      "description": "Fleet vehicle management"
+    },
+    "/routes/{routeId}": {
+      "schema": "Route",
+      "description": "Optimized delivery routes"
+    }
+  }
+}

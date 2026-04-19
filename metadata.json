@@ -1,0 +1,8 @@
+{
+  "name": "Horizon UK Logistics Dispatcher",
+  "description": "Premium real-time dispatch management system for UK logistics, featuring HGV tracking and route optimisation.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}
